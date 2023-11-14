@@ -32,6 +32,10 @@ fs.readdir("./Text-files", (err, files) => {
   });
 });
 
+app.get("/", (request, response) => {
+  response.send("Nodejs File System");
+});
+
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}`);
 });
