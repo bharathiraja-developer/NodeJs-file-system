@@ -2,8 +2,8 @@ const express = require("express");
 const app = express();
 const fs = require("fs");
 
-const hostname = "127.0.0.1";
-const port = 3000;
+const HOSTNAME = "127.0.0.1";
+const PORT = 3000;
 
 let content = new Date().toISOString();
 let date = content.slice(0, 10);
@@ -36,6 +36,6 @@ app.get("/", (request, response) => {
   response.send("Nodejs File System");
 });
 
-app.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}`);
+app.listen(PORT, () => {
+  console.log(`Server running at http://${HOSTNAME}:${PORT}`);
 });
