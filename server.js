@@ -10,30 +10,34 @@ let date = content.slice(0, 10);
 let time = content.slice(11, 19).split(":").join("-");
 
 // API endpoint to create a text file
-fs.writeFile(
-  `./Text-files/${date}-${time}.txt`,
-  content,
-  { flag: "w+" },
-  (err) => {
-    if (err) console.log(err);
-  }
-);
-
-// API endpoint to retrieve all the text files
-fs.readdir("./Text-files", (err, files) => {
-  if (err) console.log(err);
-
-  // print all the file name along with the content of the file
-  files.forEach((file) => {
-    fs.readFile(`./Text-files/${file}`, "utf-8", (err, data) => {
+app.get("/", (request, response) => {
+  fs.writeFile(
+    `./Text-files/${date}-${time}.txt`,
+    content,
+    { flag: "w+" },
+    (err) => {
       if (err) console.log(err);
-      console.log(`File Name : ${file} Content : ${data}`);
-    });
-  });
+      response.send({ message: "File created succesfully" });
+    }
+  );
 });
 
-app.get("/", (request, response) => {
-  response.send("Nodejs File System");
+// API endpoint to retrieve all the text files
+app.get("/retrieve", (request, response) => {
+  fs.readdir("./Text-files", (err, files) => {
+    if (err) console.log(err);
+
+    // print all the file name along with the content of the file
+    files.forEach((file) => {
+      response.write("<p>File name: " + file + "</p>");
+      fs.readFile(`./Text-files/${file}`, "utf-8", (err, data) => {
+        if (err) console.log(err);
+        console.log(`File Name : ${file} Content : ${data}`);
+      });
+    });
+    //end the response process
+    response.end();
+  });
 });
 
 app.listen(PORT, () => {
